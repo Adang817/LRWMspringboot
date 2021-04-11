@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.enilu.flash.api.daopakage.WxMapper">
+
+<select id="checkOAndS" resultType="int">
+    select count(*) from waimai.customer where openID=#{openid} and session=#{session_key}
+</select>
+
+</mapper>

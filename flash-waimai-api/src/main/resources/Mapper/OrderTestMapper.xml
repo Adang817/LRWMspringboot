@@ -1,0 +1,100 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.enilu.flash.api.daopakage.BusinessTestMapper">
+
+    <select id="getOrderAll" resultType="OrderPojoTest"  >
+        select  *  from  waimai.foodmanagement
+    </select>
+
+    <select id="getShopAll" resultType="ShopPojo">
+        select * from waimai.shop
+
+        <if test="name!=null and name!='' ">
+                where shop_name like concat("%",#{name},"%")
+        </if>
+
+        limit #{currentPage},#{pageSize}
+    </select>
+
+    <select id="getShopSum" resultType="int" >
+        select count(*) as sum from waimai.shop
+
+        <if test="name!=null and name!='' ">
+            where shop_name like concat("%",#{name},"%")
+        </if>
+    </select>
+
+    <select id="delShopById" parameterType="int">
+        delete from waimai.shop where shop_id=#{id}
+    </select>
+
+    <select id="updateShop">
+        update waimai.shop set shop_name=#{shop_name},shop_address=#{shop_address},
+               shop_content=#{shop_content},shop_phone=#{shop_phone},
+              shop_classification=#{shop_classification},shop_sales=#{shop_sales},shop_pic=#{shop_pic}
+        where shop_id=#{shop_id}
+    </select>
+
+
+    <select id="addShop" >
+        insert into waimai.shop
+        (shop_name, shop_address, shop_content, shop_pic, shop_phone, shop_classification)
+         VALUES
+        (#{shop_name},#{shop_address},#{shop_content},#{shop_pic},#{shop_phone},#{shop_classification})
+    </select>
+
+
+    <select id="getRepeatData" resultType="int">
+        select count(*) as sum from waimai.shop where shop_name=#{shop_name}
+    </select>
+
+    <select id="addFood" >
+        insert into waimai.food (shop_name, food_name, food_content, food_pic, food_flavor, packing_fee, food_total,food_type) VALUES
+            (#{shop_name},#{food_name},#{food_content},#{food_pic},#{food_flavor},#{packing_fee},#{food_total},#{food_type})
+    </select>
+
+    <select id="getRepeatDataFood" resultType="int">
+        select count(*) from waimai.food where food_name=#{food_name} and shop_name=#{shop_name}
+    </select>
+
+    <select id="getAllFood" resultType="Food">
+
+        SELECT * FROM waimai.food
+
+        <if test="shop_name!=null and shop_name!='' ">
+            WHERE shop_name=#{shop_name}
+        </if>
+
+        limit #{currentPage},#{pageSize}
+
+    </select>
+
+    <select id="getFoodSum" resultType="int" >
+        SELECT count(*) FROM waimai.food
+        <if test="shop_name!=null and shop_name!='' ">
+            where shop_name=#{shop_name}
+        </if>
+
+    </select>
+
+    <select id="delFood" parameterType="int">
+        delete from waimai.food where food_id=#{food_id}
+    </select>
+
+    <select id="updateFood">
+        update waimai.food set food_name=#{food_name},food_content=#{food_content},food_type=#{food_type},
+                               food_pic=#{food_pic},packing_fee=#{packing_fee},food_sales=#{food_sales},food_total=#{food_total} where
+        food_id=#{food_id}
+    </select>
+
+
+    <select id="getShopSales" resultType="int">
+        select sum(shop_sales) from waimai.shop
+    </select>
+
+    <select id="getShopTypeSales" resultType="int" parameterType="string">
+        select sum(shop_sales) from waimai.shop where shop_classification=#{shop_classification}
+    </select>
+</mapper>
